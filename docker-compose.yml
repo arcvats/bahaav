@@ -1,0 +1,29 @@
+services:
+  bahaav:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: bahaav
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    volumes:
+      - .:/app
+    depends_on:
+      - bahaav-db
+  bahaav-db:
+    image: postgres:17.0-alpine
+    container_name: bahaav-db
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - bahaav-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=helloworld
+      - PGDATA=/var/lib/postgresql/data
+volumes:
+  bahaav-data:
